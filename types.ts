@@ -1,3 +1,5 @@
+import React from 'react';
+
 export interface Campaign {
   id: string;
   title: string;
@@ -74,6 +76,8 @@ export interface LocationRequest {
   email: string;
   phone: string;
   imageUrl?: string;
+  address?: string;
+  verified?: boolean;
 }
 
 export interface ChatbotMessage {

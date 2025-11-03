@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback, createContext, useCont
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 // FIX: Import MOCK_CAMPAIGNS to resolve reference error.
-import { DonifyLogo, NAV_LINKS, Bars3Icon, XMarkIcon, HomeIcon, GlobeAltIcon, PlusCircleIcon, TrophyIcon, UserCircleIcon, CheckBadgeIcon, ArrowUpIcon, SOCIAL_LINKS, InitialsAvatar, CreditCardIcon, DevicePhoneMobileIcon, BuildingLibraryIcon, ArrowLeftIcon, ChatBubbleOvalLeftEllipsisIcon, MOCK_CAMPAIGNS, MOCK_LOCATION_REQUESTS, EnvelopeIcon, PhotoIcon, generateUniqueCampaigns } from './constants';
+import { DonifyLogo, NAV_LINKS, Bars3Icon, XMarkIcon, HomeIcon, GlobeAltIcon, PlusCircleIcon, TrophyIcon, UserCircleIcon, CheckBadgeIcon, ArrowUpIcon, SOCIAL_LINKS, InitialsAvatar, CreditCardIcon, DevicePhoneMobileIcon, BuildingLibraryIcon, ArrowLeftIcon, ChatBubbleOvalLeftEllipsisIcon, MOCK_CAMPAIGNS, MOCK_LOCATION_REQUESTS, EnvelopeIcon, PhotoIcon, generateUniqueCampaigns, ExclamationTriangleIcon, generateRandomLocationRequests, ChatbotIcon } from './constants';
 import type { Campaign, FAQItem, AuthUser, ChatbotMessage, LocationRequest } from './types';
 
 
@@ -73,7 +73,10 @@ export const GlobalProvider = ({ children }: { children: ReactNode }) => {
             return initialCampaigns;
         }
     });
-    const [locationRequests, setLocationRequests] = useState<LocationRequest[]>(MOCK_LOCATION_REQUESTS);
+    const [locationRequests, setLocationRequests] = useState<LocationRequest[]>(() => {
+        const generatedRequests = generateRandomLocationRequests(95); // Generate 95 random requests
+        return [...MOCK_LOCATION_REQUESTS, ...generatedRequests]; // Combine with the 5 specific ones
+    });
 
     useEffect(() => {
         localStorage.setItem('donifyCampaigns', JSON.stringify(campaigns));
@@ -328,7 +331,14 @@ export const Header: React.FC = () => {
                     <InitialsAvatar name={currentUser.name} className="h-10 w-10 text-base" />
                     <div>
                         <p className="font-semibold text-gray-800 leading-tight flex items-center gap-1.5">{currentUser.name} {currentUser.verified && <CheckBadgeIcon className="h-4 w-4 text-blue-500" title="Verified User" />}</p>
-                        <p className="text-xs text-gray-500 leading-tight">{currentUser.userType === 'ngo' ? currentUser.ngoName : `₹${currentUser.totalDonatedThisMonth.toLocaleString('en-IN')} donated`}</p>
+                        <p className="text-xs text-gray-500 leading-tight">
+                            {currentUser.email === 'guest@donify.com' 
+                                ? 'Guest Account'
+                                : currentUser.userType === 'ngo' 
+                                    ? currentUser.ngoName 
+                                    : `₹${currentUser.totalDonatedThisMonth.toLocaleString('en-IN')} donated`
+                            }
+                        </p>
                     </div>
                 </NavLink>
               ) : (
@@ -383,8 +393,8 @@ export const Header: React.FC = () => {
 export const Footer: React.FC = () => (
     <footer className="bg-gradient-to-r from-gray-800 via-slate-900 to-gray-800 text-gray-300">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div className="col-span-1 md:col-span-2 lg:col-span-1">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8">
+                <div className="sm:col-span-2 lg:col-span-1">
                     <div className="flex items-center space-x-2 mb-4">
                        <DonifyLogo className="h-9 w-9" />
                        <span className="text-2xl font-bold text-white tracking-tight">Donify</span>
@@ -404,6 +414,13 @@ export const Footer: React.FC = () => (
                     <ul className="space-y-2">
                         <li><NavLink to="/privacy" className="text-gray-400 hover:text-white">Privacy Policy</NavLink></li>
                         <li><NavLink to="/terms" className="text-gray-400 hover:text-white">Terms of Service</NavLink></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 className="text-lg font-semibold text-white mb-4">Contact Us</h3>
+                    <ul className="space-y-2">
+                        <li><a href="mailto:hello@donify.com" className="text-gray-400 hover:text-white flex items-center gap-2"><EnvelopeIcon className="w-4 h-4" /> Email</a></li>
+                        <li><a href="tel:+911234567890" className="text-gray-400 hover:text-white flex items-center gap-2"><DevicePhoneMobileIcon className="w-4 h-4" /> Phone</a></li>
                     </ul>
                 </div>
                 <div>
@@ -476,7 +493,7 @@ export const PrimaryButton: React.FC<ButtonProps> = ({ children, onClick, classN
     if(onClick) onClick(e);
   };
   return (
-    <button onClick={handleClick} className={`px-6 py-3 rounded-xl bg-blue-500 text-white font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed ${className}`} {...props}>
+    <button onClick={handleClick} className={`inline-flex items-center justify-center px-6 py-3 rounded-xl bg-blue-500 text-white font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed ${className}`} {...props}>
         {children}
     </button>
   );
@@ -489,7 +506,7 @@ export const SecondaryButton: React.FC<ButtonProps> = ({ children, onClick, clas
       if(onClick) onClick(e);
     };
     return (
-        <button onClick={handleClick} className={`px-6 py-3 rounded-xl bg-gray-200 text-gray-800 font-semibold hover:bg-gray-300 transform hover:scale-105 transition-all duration-300 ${className}`}>
+        <button onClick={handleClick} className={`inline-flex items-center justify-center px-6 py-3 rounded-xl bg-gray-200 text-gray-800 font-semibold hover:bg-gray-300 transform hover:scale-105 transition-all duration-300 ${className}`}>
             {children}
         </button>
     );
@@ -836,6 +853,45 @@ export const InfoModal: React.FC<{ show: boolean; onClose: () => void; title: st
   );
 };
 
+export const LoginPromptModal: React.FC<{ show: boolean; onClose: () => void; }> = ({ show, onClose }) => {
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const handleLogin = () => {
+        onClose();
+        navigate('/login', { state: { from: location, message: "Please log in to continue." } });
+    };
+
+    return (
+        <AnimatePresence>
+            {show && (
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+                    onClick={onClose}
+                >
+                    <motion.div
+                        initial={{ scale: 0.9, opacity: 0, y: 50 }}
+                        animate={{ scale: 1, opacity: 1, y: 0 }}
+                        exit={{ scale: 0.9, opacity: 0, y: 50 }}
+                        className="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-6 text-center"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <ExclamationTriangleIcon className="h-16 w-16 text-yellow-500 mx-auto" />
+                        <h2 className="text-2xl font-bold text-gray-800 mt-4">Login Required</h2>
+                        <p className="text-gray-600 mt-2 mb-6">You need to be logged in to perform this action.</p>
+                        <div className="flex justify-center gap-4">
+                            <SecondaryButton onClick={onClose} className="w-full">Go Back</SecondaryButton>
+                            <PrimaryButton onClick={handleLogin} className="w-full">Login</PrimaryButton>
+                        </div>
+                    </motion.div>
+                </motion.div>
+            )}
+        </AnimatePresence>
+    );
+};
 
 export const ConfirmationModal: React.FC<{ show: boolean; onClose: () => void; onConfirm: () => void; title: string; message: string; confirmText?: string; }> = ({ show, onClose, onConfirm, title, message, confirmText = "Confirm" }) => {
   return (
@@ -862,37 +918,6 @@ export const ConfirmationModal: React.FC<{ show: boolean; onClose: () => void; o
               <button onClick={onConfirm} className="w-full px-6 py-3 rounded-xl bg-red-500 text-white font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 hover:bg-red-600">
                 {confirmText}
               </button>
-            </div>
-          </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
-  );
-};
-
-export const GuestActionModal: React.FC<{ show: boolean; onClose: () => void; onLogin: () => void; }> = ({ show, onClose, onLogin }) => {
-  return (
-    <AnimatePresence>
-      {show && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
-          onClick={onClose}
-        >
-          <motion.div
-            initial={{ scale: 0.9, opacity: 0, y: 50 }}
-            animate={{ scale: 1, opacity: 1, y: 0 }}
-            exit={{ scale: 0.9, opacity: 0, y: 50 }}
-            className="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-6 text-center"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h2 className="text-2xl font-bold text-gray-800">Login Required</h2>
-            <p className="text-gray-600 mt-2 mb-6">You need to log in with a proper account to proceed!</p>
-            <div className="flex justify-center gap-4">
-              <SecondaryButton onClick={onClose} className="w-full">Go Back</SecondaryButton>
-              <PrimaryButton onClick={onLogin} className="w-full">Login</PrimaryButton>
             </div>
           </motion.div>
         </motion.div>
@@ -1156,7 +1181,7 @@ export const Chatbot: React.FC = () => {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
             >
-                <ChatBubbleOvalLeftEllipsisIcon className="w-8 h-8" />
+                <ChatbotIcon className="w-8 h-8" />
             </motion.button>
         </>
     )

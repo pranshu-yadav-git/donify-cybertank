@@ -13,9 +13,9 @@ const ScrollToTop = () => {
 };
 
 const pageVariants = {
-  initial: { opacity: 0 },
-  in: { opacity: 1 },
-  out: { opacity: 0 },
+  initial: { opacity: 0, filter: 'blur(4px)' },
+  in: { opacity: 1, filter: 'blur(0px)' },
+  out: { opacity: 0, filter: 'blur(4px)' },
 };
 
 const pageTransition: Transition = {
@@ -24,7 +24,7 @@ const pageTransition: Transition = {
   duration: 0.5,
 };
 
-const AnimatedRoutes: React.FC = () => {
+const AnimatedRoutes = () => {
   const location = useLocation();
 
   return (
@@ -61,7 +61,7 @@ const AnimatedRoutes: React.FC = () => {
   );
 };
 
-const AppContent: React.FC = () => {
+const AppContent = () => {
   const location = useLocation();
   const noLayoutPages = ['/login', '/signup', '/payment-setup'];
   const isLayoutHidden = noLayoutPages.includes(location.pathname);
@@ -80,7 +80,7 @@ const AppContent: React.FC = () => {
   );
 }
 
-const App: React.FC = () => {
+const App = () => {
   return (
     <HashRouter>
       <GlobalProvider>

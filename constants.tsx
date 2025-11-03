@@ -51,17 +51,21 @@ export const ArrowLeftIcon: React.FC<{className?: string}> = ({className}) => (<
 export const ChatBubbleOvalLeftEllipsisIcon: React.FC<{className?: string}> = ({className}) => (<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}><path strokeLinecap="round" strokeLinejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.761 9.761 0 01-2.542-.383m-2.846-1.141a3.375 3.375 0 00-2.823-2.823m-1.14-2.846a9.761 9.761 0 01-.383-2.542c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z" /></svg>);
 export const ExclamationTriangleIcon: React.FC<{ className?: string }> = ({ className }) => (<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" /></svg>);
 export const PhotoIcon: React.FC<{className?: string}> = ({className}) => (<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" /></svg>);
+export const ChatbotIcon: React.FC<{className?: string}> = ({className}) => (
+    <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10c.89 0 1.74-.12 2.56-.34.07-.02.14-.04.2-.06a.5.5 0 00.21-.49l-.01-.37c0-.28-.22-.5-.5-.5a7.5 7.5 0 01-7.46-7.5c0-3.83 2.9-6.96 6.59-7.41a.5.5 0 00.41-.5V5a.5.5 0 00-.5-.5c-1.38 0-2.6.45-3.59 1.18a.5.5 0 01-.63-.18L7.6 3.93a.5.5 0 01.18-.63A9.44 9.44 0 0112 2zm8 6a4 4 0 00-4-4V2.5a.5.5 0 00-1 0V4a4 4 0 00-4 4v6a4 4 0 004 4h2v2.5a.5.5 0 001 0V18h.5a.5.5 0 00.5-.5V16a4 4 0 004-4V8zm-2 6a2 2 0 01-2 2h-2a2 2 0 01-2-2V8a2 2 0 012-2h2a2 2 0 012 2v6z"/>
+        <path d="M11 11a1 1 0 10-2 0 1 1 0 002 0zm5 0a1 1 0 10-2 0 1 1 0 002 0z"/>
+    </svg>
+);
 
 
 // Social Icons
-const TwitterIcon: React.FC = () => (<svg role="img" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.223.085 4.93 4.93 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>);
-const FacebookIcon: React.FC = () => (<svg role="img" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M22.675 0H1.325C.593 0 0 .593 0 1.325v21.351C0 23.407.593 24 1.325 24H12.82v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116c.732 0 1.325-.593 1.325-1.325V1.325C24 .593 23.407 0 22.675 0z"/></svg>);
+const XIcon: React.FC = () => (<svg role="img" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>);
 const InstagramIcon: React.FC = () => (<svg role="img" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126s1.338.935 2.126 1.384c.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.717 2.126-1.384s.935-1.338 1.384-2.126c.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.148-.558-2.913-.306-.789-.717-1.459-1.384-2.126S20.65.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.056 1.17-.249 1.805-.413 2.227-.217.562-.477.96-.896 1.382-.42.419-.82.679-1.38.896-.422.164-1.057.36-2.227.413-1.266.057-1.646.07-4.85.07s-3.585-.015-4.85-.07c-1.17-.056-1.805-.249-2.227-.413-.562-.217-.96-.477-1.382-.896-.419-.42-.679-.82-1.381-.896-.164-.422-.36-1.057-.413-2.227-.057-1.266-.07-1.646-.07-4.85s.015-3.585.07-4.85c.056-1.17.249 1.805.413-2.227.217-.562.477.96.896-1.382.42-.419.819-.679 1.381-.896.422-.164 1.057.36 2.227-.413 1.266-.057 1.646-.07 4.85-.07zM12 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.88 1.44 1.44 0 000-2.88z"/></svg>);
 
 export const SOCIAL_LINKS = [
-  { name: 'Facebook', icon: FacebookIcon, href: '#' },
   { name: 'Instagram', icon: InstagramIcon, href: '#' },
-  { name: 'Twitter', icon: TwitterIcon, href: '#' },
+  { name: 'X', icon: XIcon, href: '#' },
 ];
 
 // =================================================================
@@ -127,7 +131,7 @@ export const MOCK_CAMPAIGNS: Campaign[] = [
     title: 'Emergency Medical Aid for Flood Victims',
     description: 'Provide immediate medical supplies and support to disaster-stricken areas.',
     longDescription: 'Recent flash floods have left thousands without homes, food, and medical care. This is an urgent appeal to fund emergency medical kits, mobile clinics, and volunteer doctors to provide life-saving aid to the victims.',
-    images: ['https://picsum.photos/seed/flood_relief/600/400', 'https://picsum.photos/seed/flood_victims/600/400'],
+    images: ['https://source.unsplash.com/600x400/?flood,relief,medical', 'https://source.unsplash.com/600x400/?disaster,aid'],
     goal: 2000000,
     raised: 1560000,
     donors: 412,
@@ -145,7 +149,7 @@ export const MOCK_CAMPAIGNS: Campaign[] = [
     title: 'Help Children in Need Get Education',
     description: 'Provide books and school supplies for underprivileged children.',
     longDescription: 'In many remote villages, children lack the basic tools for education. This campaign aims to provide 1,000 children with a complete school kit, including books, stationery, and a school bag. Your donation can light up a child\'s future.',
-    images: ['https://picsum.photos/seed/child_education/600/400'],
+    images: ['https://source.unsplash.com/600x400/?unicef,child,education'],
     goal: 800000,
     raised: 600000,
     donors: 123,
@@ -172,7 +176,7 @@ export const MOCK_CAMPAIGNS: Campaign[] = [
     title: 'Clean Water for a Rural Village',
     description: 'Fund a new well to provide clean, safe drinking water.',
     longDescription: 'A village of 500 people is currently relying on a contaminated river for their daily water needs, leading to widespread illness. This project will fund the construction of a deep borehole well, ensuring a sustainable source of clean water for generations to come.',
-    images: ['https://picsum.photos/seed/clean_water/600/400'],
+    images: ['https://source.unsplash.com/600x400/?clean,water,well,village,india'],
     goal: 400000,
     raised: 400000,
     donors: 85,
@@ -199,7 +203,7 @@ export const MOCK_CAMPAIGNS: Campaign[] = [
     title: 'Help Sumita Devi Rebuild Her Home', 
     description: 'A single mother lost her home in a fire. Help her rebuild.',
     longDescription: 'Sumita Devi, a hardworking single mother of two, lost everything when a fire engulfed her small home. She and her children are currently staying in a temporary shelter. This campaign aims to raise funds to rebuild her house and provide essential household items, giving this family a chance to start over.', 
-    images: ['https://picsum.photos/seed/rebuild_home/600/400'], 
+    images: ['https://source.unsplash.com/600x400/?rebuild,home,fire,victim'], 
     goal: 250000, 
     raised: 50000, 
     donors: 30, 
@@ -212,15 +216,15 @@ export const MOCK_CAMPAIGNS: Campaign[] = [
     updates: [], 
     comments: [] 
    },
-    { id: '3', title: 'Plant 10,000 Trees to Fight Climate Change', description: 'Help reforest areas affected by logging and wildfires.', longDescription: 'Forests are the lungs of our planet. This campaign is an ambitious project to plant 10,000 native trees in a region devastated by recent wildfires. Each tree costs just ₹80 to plant and nurture for its first year. Join us in restoring this vital ecosystem.', images: ['https://picsum.photos/seed/forest_trees/600/400'], goal: 800000, raised: 256000, donors: 250, category: 'Environment', creatorType: 'ngo', organizer: { name: 'Anil Verma', avatarUrl: '', ngoDetails: { name: 'Harit Prithvi Initiative', phone: '+91-1234567890', email: 'green@haritprithvi.org', address: '789, Forest Way, Ooty, Tamil Nadu, 643001' } }, verified: true, urgency: 'Low', location: 'Western Ghats', updates: [], comments: [] },
-    { id: '5', title: 'Support Animal Shelters', description: 'Provide food and medical care for stray animals.', longDescription: 'Our city\'s animal shelters are overflowing with abandoned and injured animals. This campaign will help provide nutritious food, essential vaccinations, and medical treatments to give these animals a second chance at life.', images: ['https://picsum.photos/seed/animal_shelter/600/400'], goal: 500000, raised: 150000, donors: 95, category: 'Animals', creatorType: 'individual', organizer: { name: 'Paws for Cause', avatarUrl: '' }, verified: true, urgency: 'Medium', location: 'Mumbai', updates: [], comments: [] },
-    { id: '6', title: 'Digital Literacy for Seniors', description: 'Help elderly citizens learn essential digital skills.', longDescription: 'In an increasingly digital world, many senior citizens are left behind. This program offers free workshops to teach them how to use smartphones, access online services, and connect with their loved ones, combating loneliness and empowering them.', images: ['https://picsum.photos/seed/senior_citizens/600/400'], goal: 300000, raised: 280000, donors: 78, category: 'Elderly', creatorType: 'individual', organizer: { name: 'Senior Connect', avatarUrl: '' }, verified: false, urgency: 'Low', location: 'Bangalore', updates: [], comments: [] },
-    { id: '7', title: 'Mid-Day Meals for School Children', description: 'Ensure no child goes hungry at school.', longDescription: 'A nutritious meal is crucial for a child\'s concentration and development. This campaign provides hot, healthy mid-day meals to 5,000 children in government schools, improving attendance and academic performance.', images: ['https://picsum.photos/seed/school_meals/600/400'], goal: 1500000, raised: 950000, donors: 350, category: 'Children', creatorType: 'ngo', organizer: { name: 'Sunil Mehta', avatarUrl: '', ngoDetails: { name: 'Annapoorna Foundation', phone: '+91-3456789012', email: 'meals@annapoorna.org', address: '222, Nutrition Blvd, Delhi, 110002' } }, verified: true, urgency: 'High', location: 'Delhi', updates: [], comments: [] },
-    { id: '8', title: 'Cyclone Relief for Coastal Communities', description: 'Rebuild homes and livelihoods after the recent cyclone.', longDescription: 'A powerful cyclone has devastated coastal villages, destroying homes and fishing boats. We are providing immediate relief with temporary shelters, food supplies, and financial aid to help families rebuild their lives.', images: ['https://picsum.photos/seed/cyclone_disaster/600/400'], goal: 2500000, raised: 1100000, donors: 520, category: 'Disaster Relief', creatorType: 'ngo', organizer: { name: 'Kavita Das', avatarUrl: '', ngoDetails: { name: 'Samudra Rakshak', phone: '+91-4567890123', email: 'coast@rakshak.org', address: '333, Coastal Hwy, Puri, Odisha, 752001' } }, verified: true, urgency: 'High', location: 'Odisha', updates: [], comments: [] },
-    { id: '9', title: 'Skill Development for Unemployed Youth', description: 'Provide vocational training for better job opportunities.', longDescription: 'This project offers courses in high-demand trades like plumbing, electrical work, and computer skills to unemployed youth. By equipping them with practical skills, we aim to help them secure stable employment and build a brighter future.', images: ['https://picsum.photos/seed/skill_training/600/400'], goal: 900000, raised: 300000, donors: 110, category: 'Education', creatorType: 'individual', organizer: { name: 'Kaushal Kendra', avatarUrl: '' }, verified: true, urgency: 'Medium', location: 'Pune', updates: [], comments: [] },
-    { id: '10', title: 'Clean Up the Ganges River', description: 'Community-driven initiative to remove plastic waste.', longDescription: 'The sacred Ganges is choking on plastic pollution. This campaign organizes and equips local volunteer groups for large-scale river clean-up drives, while also running awareness programs to reduce plastic usage in nearby towns.', images: ['https://picsum.photos/seed/ganges_river/600/400'], goal: 600000, raised: 450000, donors: 280, category: 'Environment', creatorType: 'ngo', organizer: { name: 'Rajiv Tiwari', avatarUrl: '', ngoDetails: { name: 'Ganga Prahari', phone: '+91-5678901234', email: 'clean@ganga.org', address: '555, Ghat Rd, Varanasi, Uttar Pradesh, 221001' } }, verified: true, urgency: 'Medium', location: 'Varanasi', updates: [], comments: [] },
-    { id: '11', title: 'Mental Health Support Hotline', description: 'Fund a free, confidential counseling service.', longDescription: 'Mental health is often stigmatized and inaccessible. This project funds a 24/7 hotline staffed by trained counselors, providing a safe space for anyone to talk and receive professional guidance during times of distress.', images: ['https://picsum.photos/seed/mental_health/600/400'], goal: 1200000, raised: 550000, donors: 150, category: 'Medical', creatorType: 'individual', organizer: { name: 'Mann Seva', avatarUrl: '' }, verified: true, urgency: 'High', location: 'All India', updates: [], comments: [] },
-    { id: '12', title: 'Preserve Indian Folk Art', description: 'Support traditional artists and keep ancient art forms alive.', longDescription: 'Many traditional Indian art forms are on the verge of extinction. This campaign provides financial support and a platform for folk artists to practice their craft, teach the next generation, and showcase their work to a wider audience.', images: ['https://picsum.photos/seed/folk_art/600/400'], goal: 400000, raised: 180000, donors: 60, category: 'Education', creatorType: 'individual', organizer: { name: 'Kala Sanskriti Foundation', avatarUrl: '' }, verified: false, urgency: 'Low', location: 'Jaipur', updates: [], comments: [] },
+    { id: '3', title: 'Plant 10,000 Trees to Fight Climate Change', description: 'Help reforest areas affected by logging and wildfires.', longDescription: 'Forests are the lungs of our planet. This campaign is an ambitious project to plant 10,000 native trees in a region devastated by recent wildfires. Each tree costs just ₹80 to plant and nurture for its first year. Join us in restoring this vital ecosystem.', images: ['https://source.unsplash.com/600x400/?forest,reforestation,trees,environment'], goal: 800000, raised: 256000, donors: 250, category: 'Environment', creatorType: 'ngo', organizer: { name: 'Anil Verma', avatarUrl: '', ngoDetails: { name: 'Harit Prithvi Initiative', phone: '+91-1234567890', email: 'green@haritprithvi.org', address: '789, Forest Way, Ooty, Tamil Nadu, 643001' } }, verified: true, urgency: 'Low', location: 'Western Ghats', updates: [], comments: [] },
+    { id: '5', title: 'Support Animal Shelters', description: 'Provide food and medical care for stray animals.', longDescription: 'Our city\'s animal shelters are overflowing with abandoned and injured animals. This campaign will help provide nutritious food, essential vaccinations, and medical treatments to give these animals a second chance at life.', images: ['https://source.unsplash.com/600x400/?animal,shelter,dog,rescue'], goal: 500000, raised: 150000, donors: 95, category: 'Animals', creatorType: 'individual', organizer: { name: 'Paws for Cause', avatarUrl: '' }, verified: true, urgency: 'Medium', location: 'Mumbai', updates: [], comments: [] },
+    { id: '6', title: 'Digital Literacy for Seniors', description: 'Help elderly citizens learn essential digital skills.', longDescription: 'In an increasingly digital world, many senior citizens are left behind. This program offers free workshops to teach them how to use smartphones, access online services, and connect with their loved ones, combating loneliness and empowering them.', images: ['https://source.unsplash.com/600x400/?elderly,learning,computer,senior'], goal: 300000, raised: 280000, donors: 78, category: 'Elderly', creatorType: 'individual', organizer: { name: 'Senior Connect', avatarUrl: '' }, verified: false, urgency: 'Low', location: 'Bangalore', updates: [], comments: [] },
+    { id: '7', title: 'Mid-Day Meals for School Children', description: 'Ensure no child goes hungry at school.', longDescription: 'A nutritious meal is crucial for a child\'s concentration and development. This campaign provides hot, healthy mid-day meals to 5,000 children in government schools, improving attendance and academic performance.', images: ['https://source.unsplash.com/600x400/?school,children,food,meal,india'], goal: 1500000, raised: 950000, donors: 350, category: 'Children', creatorType: 'ngo', organizer: { name: 'Sunil Mehta', avatarUrl: '', ngoDetails: { name: 'Annapoorna Foundation', phone: '+91-3456789012', email: 'meals@annapoorna.org', address: '222, Nutrition Blvd, Delhi, 110002' } }, verified: true, urgency: 'High', location: 'Delhi', updates: [], comments: [] },
+    { id: '8', title: 'Cyclone Relief for Coastal Communities', description: 'Rebuild homes and livelihoods after the recent cyclone.', longDescription: 'A powerful cyclone has devastated coastal villages, destroying homes and fishing boats. We are providing immediate relief with temporary shelters, food supplies, and financial aid to help families rebuild their lives.', images: ['https://source.unsplash.com/600x400/?cyclone,disaster,coast,relief'], goal: 2500000, raised: 1100000, donors: 520, category: 'Disaster Relief', creatorType: 'ngo', organizer: { name: 'Kavita Das', avatarUrl: '', ngoDetails: { name: 'Samudra Rakshak', phone: '+91-4567890123', email: 'coast@rakshak.org', address: '333, Coastal Hwy, Puri, Odisha, 752001' } }, verified: true, urgency: 'High', location: 'Odisha', updates: [], comments: [] },
+    { id: '9', title: 'Skill Development for Unemployed Youth', description: 'Provide vocational training for better job opportunities.', longDescription: 'This project offers courses in high-demand trades like plumbing, electrical work, and computer skills to unemployed youth. By equipping them with practical skills, we aim to help them secure stable employment and build a brighter future.', images: ['https://source.unsplash.com/600x400/?skill,training,youth,vocational,india'], goal: 900000, raised: 300000, donors: 110, category: 'Education', creatorType: 'individual', organizer: { name: 'Kaushal Kendra', avatarUrl: '' }, verified: true, urgency: 'Medium', location: 'Pune', updates: [], comments: [] },
+    { id: '10', title: 'Clean Up the Ganges River', description: 'Community-driven initiative to remove plastic waste.', longDescription: 'The sacred Ganges is choking on plastic pollution. This campaign organizes and equips local volunteer groups for large-scale river clean-up drives, while also running awareness programs to reduce plastic usage in nearby towns.', images: ['https://source.unsplash.com/600x400/?ganges,river,clean,environment'], goal: 600000, raised: 450000, donors: 280, category: 'Environment', creatorType: 'ngo', organizer: { name: 'Rajiv Tiwari', avatarUrl: '', ngoDetails: { name: 'Ganga Prahari', phone: '+91-5678901234', email: 'clean@ganga.org', address: '555, Ghat Rd, Varanasi, Uttar Pradesh, 221001' } }, verified: true, urgency: 'Medium', location: 'Varanasi', updates: [], comments: [] },
+    { id: '11', title: 'Mental Health Support Hotline', description: 'Fund a free, confidential counseling service.', longDescription: 'Mental health is often stigmatized and inaccessible. This project funds a 24/7 hotline staffed by trained counselors, providing a safe space for anyone to talk and receive professional guidance during times of distress.', images: ['https://source.unsplash.com/600x400/?mental,health,support,counseling'], goal: 1200000, raised: 550000, donors: 150, category: 'Medical', creatorType: 'individual', organizer: { name: 'Mann Seva', avatarUrl: '' }, verified: true, urgency: 'High', location: 'All India', updates: [], comments: [] },
+    { id: '12', title: 'Preserve Indian Folk Art', description: 'Support traditional artists and keep ancient art forms alive.', longDescription: 'Many traditional Indian art forms are on the verge of extinction. This campaign provides financial support and a platform for folk artists to practice their craft, teach the next generation, and showcase their work to a wider audience.', images: ['https://source.unsplash.com/600x400/?indian,folk,art,traditional'], goal: 400000, raised: 180000, donors: 60, category: 'Education', creatorType: 'individual', organizer: { name: 'Kala Sanskriti Foundation', avatarUrl: '' }, verified: false, urgency: 'Low', location: 'Jaipur', updates: [], comments: [] },
 ];
 
 export const MOCK_TESTIMONIALS: Testimonial[] = [
@@ -289,11 +293,11 @@ export const HOW_IT_WORKS_STEPS = [
 ];
 
 export const MOCK_LOCATION_REQUESTS: LocationRequest[] = [
-    { id: 1, type: 'recipient', title: 'Urgent Food Supply Needed', description: 'A family of 5 is in urgent need of groceries.', position: { lat: 28.46, lng: 77.03 }, name: 'Sunita Sharma', email: 'sunita.s@example.com', phone: '9876543210' },
-    { id: 2, type: 'recipient', title: 'Winter Blankets for Shelter', description: 'Shelter requires 50 warm blankets for the cold season.', position: { lat: 28.45, lng: 77.02 }, name: 'Rajiv Memorial Trust', email: 'rajiv.trust@example.com', phone: '9876543211', imageUrl: 'https://picsum.photos/seed/shelter_need/600/400' },
-    { id: 3, type: 'donor', title: 'Monthly Grocery Donor', description: 'Willing to provide monthly groceries for a family in need.', position: { lat: 28.47, lng: 77.04 }, name: 'Ankit Gupta', email: 'ankit.g@example.com', phone: '9876543212' },
-    { id: 4, type: 'recipient', title: 'Medical Aid for an Elder', description: 'An elderly resident needs assistance for medical bills.', position: { lat: 28.44, lng: 77.01 }, name: 'Kamla Devi', email: 'kamla.d@example.com', phone: '9876543213' },
-    { id: 5, type: 'donor', title: 'Education Sponsor', description: 'Happy to sponsor the education of a bright student.', position: { lat: 28.48, lng: 77.025 }, name: 'Priya Singh', email: 'priya.s@example.com', phone: '9876543214' },
+    { id: 1, type: 'recipient', title: 'Urgent Food Supply Needed', description: 'A family of 5 is in urgent need of groceries.', position: { lat: 28.46, lng: 77.03 }, name: 'Sunita Sharma', email: 'sunita.s@example.com', phone: '9876543210', address: '123, Rose Lane, Gurugram' },
+    { id: 2, type: 'recipient', title: 'Winter Blankets for Shelter', description: 'Shelter requires 50 warm blankets for the cold season.', position: { lat: 28.45, lng: 77.02 }, name: 'Rajiv Memorial Trust', email: 'rajiv.trust@example.com', phone: '9876543211', imageUrl: 'https://source.unsplash.com/600x400/?shelter,blankets,winter', address: '45, Shelter Road, Gurugram' },
+    { id: 3, type: 'donor', title: 'Monthly Grocery Donor', description: 'Willing to provide monthly groceries for a family in need.', position: { lat: 28.47, lng: 77.04 }, name: 'Ankit Gupta', email: 'ankit.g@example.com', phone: '9876543212', address: '210, Tech Park, Gurugram', verified: true },
+    { id: 4, type: 'recipient', title: 'Medical Aid for an Elder', description: 'An elderly resident needs assistance for medical bills.', position: { lat: 28.44, lng: 77.01 }, name: 'Kamla Devi', email: 'kamla.d@example.com', phone: '9876543213', address: '99, Old Age Home, Gurugram' },
+    { id: 5, type: 'donor', title: 'Education Sponsor', description: 'Happy to sponsor the education of a bright student.', position: { lat: 28.48, lng: 77.025 }, name: 'Priya Singh', email: 'priya.s@example.com', phone: '9876543214', address: '8, Knowledge Park, Gurugram', verified: false },
 ];
 
 
@@ -358,7 +362,7 @@ export const generateUniqueCampaigns = (count: number, existingCampaigns: Campai
             title,
             description: `A new initiative to help ${getRandomElement(campaignTargets).toLowerCase()}.`,
             longDescription: `This is a detailed description for the campaign '${title}'. Our goal is to make a significant impact by focusing our efforts on this crucial cause. We believe that with your support, we can achieve great things and bring positive change.`,
-            images: [`https://picsum.photos/seed/${title.substring(0, 15).replace(/\s/g, '_')}/600/400`],
+            images: [`https://source.unsplash.com/600x400/?${title.substring(0, 15).replace(/\s/g, ',')}`],
             goal,
             raised,
             donors: getRandomNumber(50, 500),
@@ -376,6 +380,54 @@ export const generateUniqueCampaigns = (count: number, existingCampaigns: Campai
     return newCampaigns;
 };
 
+const getRandomCoords = () => ({
+    lat: Math.random() * 180 - 90,
+    lng: Math.random() * 360 - 180,
+});
+const requestTitles = ['Need School Supplies', 'Seeking Winter Clothes', 'Requesting Food Aid', 'Medical Bill Assistance', 'Urgent Shelter Needed'];
+const donorTitles = ['Willing to Donate Food', 'Can Offer Tutoring', 'Sponsoring Medical Needs', 'Clothing Donor', 'General Support Available'];
+
+export const generateRandomLocationRequests = (count: number): LocationRequest[] => {
+    const requests: LocationRequest[] = [];
+    // India Bounding Box
+    const indiaLatMin = 8.4;
+    const indiaLatMax = 37.6;
+    const indiaLngMin = 68.7;
+    const indiaLngMax = 97.25;
+
+    for (let i = 0; i < count; i++) {
+        const isDonor = Math.random() > 0.6; // 40% donors
+        const type = isDonor ? 'donor' : 'recipient';
+        const name = `${getRandomElement(firstNames)} ${getRandomElement(lastNames)}`;
+        
+        const inIndia = Math.random() < 0.8; // 80% chance to be in/near India
+        let position;
+        if (inIndia) {
+            position = {
+                lat: indiaLatMin + Math.random() * (indiaLatMax - indiaLatMin),
+                lng: indiaLngMin + Math.random() * (indiaLngMax - indiaLngMin),
+            };
+        } else {
+            position = getRandomCoords(); // Existing global random coords
+        }
+        
+        requests.push({
+            id: 100 + i,
+            type,
+            title: isDonor ? getRandomElement(donorTitles) : getRandomElement(requestTitles),
+            description: 'This is a sample description for a location-based request.',
+            position,
+            name: name,
+            email: `${name.split(' ').join('.').toLowerCase()}@example.com`,
+            phone: `98765${getRandomNumber(10000, 99999)}`,
+            address: 'Address details are kept private until connection is made.',
+            verified: isDonor ? Math.random() > 0.5 : false, // 50% of donors are verified
+            imageUrl: type === 'recipient' ? `https://source.unsplash.com/600x400/?help,${getRandomElement(['child', 'poverty', 'education'])}` : undefined,
+        });
+    }
+    return requests;
+};
+
 
 // =================================================================
 // STATIC PAGE CONTENT
@@ -383,7 +435,7 @@ export const generateUniqueCampaigns = (count: number, existingCampaigns: Campai
 
 export const ABOUT_US_CONTENT = {
   title: "Our Mission: To Bridge the Gap Between Compassion and Action",
-  subtitle: "Donify is a non-profit platform built with passion by two students - Shaurya, and Pranshu—from Lions Public School, Gurugram. We are a team of aspiring technologists and storytellers dedicated to making charitable giving more transparent, accessible, and impactful.",
+  subtitle: "Donify is a non-profit platform built with passion by a group of students from Lions Public School, Gurugram. We are a team of aspiring technologists and storytellers dedicated to making charitable giving more transparent, accessible, and impactful.",
   story: "Donify was born from a simple idea: what if giving to a cause you care about was as easy as a single tap, and what if you could see the real-world change your contribution creates? As students, we saw a world full of compassion but also full of complexities that prevented people from helping. We set out to build a platform that puts trust and connection at its heart. We connect donors directly with verified, on-the-ground organizations and individuals making a tangible difference. Every campaign on our platform is carefully vetted to ensure your generosity reaches those who need it most. Our mission is not just to facilitate donations, but to build a global community united by a shared desire to create a better world, starting right from our school.",
   values: [
     { title: "Transparency", icon: EyeIcon, description: "We provide clear insights into how every rupee is used and offer regular updates directly from the campaign organizers." },
@@ -393,7 +445,7 @@ export const ABOUT_US_CONTENT = {
 };
 
 export const MEET_THE_TEAM = [
-        { name: 'Shaurya', role: 'UI/UX Designer', imageUrl: '', description: 'The creative visionary who crafted the beautiful and intuitive user experience.' },
+    { name: 'Shaurya', role: 'UI/UX Designer', imageUrl: '', description: 'The creative visionary who crafted the beautiful and intuitive user experience.' },
     { name: 'Pranshu', role: 'Product Manager', imageUrl: '', description: 'The strategic mind ensuring the platform meets the needs of both donors and recipients.' },
 ]
 

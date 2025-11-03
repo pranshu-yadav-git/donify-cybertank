@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useParams, useNavigate, NavLink, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
-import { MOCK_LEADERBOARD, MOCK_FAQS, MOCK_TESTIMONIALS, CheckBadgeIcon, HOW_IT_WORKS_STEPS, TrophyIcon, MagnifyingGlassIcon, DonifyLogo, EnvelopeIcon, LockClosedIcon, GoogleIcon, UserCircleIcon, ABOUT_US_CONTENT, CONTACT_US_CONTENT, generateUniqueUsers, generateUniqueCampaigns, CreditCardIcon, MEET_THE_TEAM, InitialsAvatar, MOCK_LOCATION_REQUESTS, MapPinIcon, XMarkIcon, DISCOVER_CATEGORIES, PhotoIcon, LifebuoyIcon } from './constants';
-import { PrimaryButton, SecondaryButton, CauseCard, DonationModal, AccordionItem, useGlobal, ConfirmationModal, PaymentFlowModal, BackButton, InfoModal, RequestHelpModal, GuestActionModal } from './components';
+import { MOCK_LEADERBOARD, MOCK_FAQS, MOCK_TESTIMONIALS, CheckBadgeIcon, HOW_IT_WORKS_STEPS, TrophyIcon, MagnifyingGlassIcon, DonifyLogo, EnvelopeIcon, LockClosedIcon, GoogleIcon, UserCircleIcon, ABOUT_US_CONTENT, CONTACT_US_CONTENT, generateUniqueUsers, generateUniqueCampaigns, CreditCardIcon, MEET_THE_TEAM, InitialsAvatar, MOCK_LOCATION_REQUESTS, MapPinIcon, XMarkIcon, DISCOVER_CATEGORIES, PhotoIcon, LifebuoyIcon, ExclamationTriangleIcon } from './constants';
+import { PrimaryButton, SecondaryButton, CauseCard, DonationModal, AccordionItem, useGlobal, ConfirmationModal, PaymentFlowModal, BackButton, InfoModal, RequestHelpModal, LoginPromptModal } from './components';
 import confetti from 'canvas-confetti';
 import { LeaderboardUser, Campaign, AuthUser } from './types';
 
@@ -31,8 +31,6 @@ const itemVariants: Variants = {
 
 export const HomePage: React.FC = () => {
     const { campaigns, currentUser } = useGlobal();
-    const [showGuestModal, setShowGuestModal] = useState(false);
-    const navigate = useNavigate();
 
     const featuredCampaigns = useMemo(() => {
         return campaigns
@@ -45,34 +43,21 @@ export const HomePage: React.FC = () => {
             .slice(0, 3);
     }, [campaigns]);
 
-    const handleLoginRedirect = () => {
-        setShowGuestModal(false);
-        navigate('/login', { state: { from: { pathname: '/create' } } });
-    };
-
-    const handleCreateFundraiserClick = () => {
-        if (currentUser && currentUser.email === 'guest@donify.com') {
-            setShowGuestModal(true);
-        } else {
-            navigate('/create');
-        }
-    };
-
     return (
         <div className="bg-gray-50/50">
             {/* Hero Section */}
             <section className="relative h-[90vh] min-h-[600px] flex items-center text-center">
-                <div className="absolute inset-0 bg-cover bg-center bg-[url('https://picsum.photos/seed/giving_hands/1800/1200')]"></div>
+                <div className="absolute inset-0 bg-cover bg-center bg-[url('https://source.unsplash.com/1800x1200/?charity,giving,hope')]"></div>
                 <div className="absolute inset-0 bg-gradient-to-t from-white via-blue-100/30 to-blue-300/40"></div>
                 <div className="relative container mx-auto px-4 z-10">
                     <motion.h1 
-                        className="text-5xl md:text-7xl font-extrabold text-gray-800"
+                        className="text-4xl sm:text-5xl md:text-7xl font-extrabold text-gray-800"
                         initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}
                     >
                         Change a life today.
                     </motion.h1>
                     <motion.p 
-                        className="mt-4 text-lg md:text-xl text-gray-600 max-w-2xl mx-auto"
+                        className="mt-4 text-base md:text-xl text-gray-600 max-w-2xl mx-auto"
                         initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }}
                     >
                         Donify makes donating transparent, simple, and heartfelt.
@@ -85,7 +70,7 @@ export const HomePage: React.FC = () => {
                            {currentUser ? 'Explore Causes' : 'Donate Now'}
                         </PrimaryButton>
                         {currentUser ? (
-                            <SecondaryButton onClick={handleCreateFundraiserClick} className="w-full sm:w-auto">Create Fundraiser</SecondaryButton>
+                            <SecondaryButton to="/create" className="w-full sm:w-auto">Create Fundraiser</SecondaryButton>
                         ) : (
                             <SecondaryButton to="/about" className="w-full sm:w-auto">Learn More</SecondaryButton>
                         )}
@@ -161,11 +146,6 @@ export const HomePage: React.FC = () => {
                     </div>
                 </div>
             </section>
-            <GuestActionModal 
-                show={showGuestModal} 
-                onClose={() => setShowGuestModal(false)} 
-                onLogin={handleLoginRedirect}
-            />
         </div>
     );
 };
@@ -238,7 +218,7 @@ export const DiscoverPage: React.FC = () => {
             
              <div className="sticky top-20 bg-white/80 backdrop-blur-lg z-20 py-4 border-b">
                  <div className="container mx-auto px-4">
-                     <div className="flex items-center gap-2 sm:gap-3 overflow-x-auto pb-2 -mb-2">
+                     <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
                         {DISCOVER_CATEGORIES.map(cat => (
                             <FilterPill key={cat.name} type={cat.name} current={category} set={setCategory}>
                                 <div className="flex items-center gap-2">
@@ -287,12 +267,12 @@ export const DetailsPage: React.FC = () => {
     const { getCampaignById, recordDonation, currentUser } = useGlobal();
     const campaign = getCampaignById(id!);
     const [showDonationModal, setShowDonationModal] = useState(false);
+    const [showLoginPrompt, setShowLoginPrompt] = useState(false);
     const [showPaymentModal, setShowPaymentModal] = useState(false);
     const [donationAmount, setDonationAmount] = useState(0);
     const [infoModalContent, setInfoModalContent] = useState<{title: string, message: string} | null>(null);
     const navigate = useNavigate();
     const location = useLocation();
-    const [showGuestModal, setShowGuestModal] = useState(false);
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -305,21 +285,12 @@ export const DetailsPage: React.FC = () => {
         }
     }, [id, campaign, getCampaignById, navigate]);
     
-    const handleLoginRedirect = () => {
-        setShowGuestModal(false);
-        navigate('/login', { state: { from: location, message: "You need to log in to make a donation." } });
-    };
-
     const handleDonateClick = () => {
-        if(campaign?.isCompleted) return;
-        if (currentUser) {
-            if (currentUser.email === 'guest@donify.com') {
-                setShowGuestModal(true);
-                return;
-            }
+        if (campaign?.isCompleted) return;
+        if (currentUser && currentUser.email !== 'guest@donify.com') {
             setShowDonationModal(true);
         } else {
-            navigate('/login', { state: { from: location, message: "You need to log in to make a donation." } });
+            setShowLoginPrompt(true);
         }
     };
 
@@ -419,25 +390,13 @@ export const DetailsPage: React.FC = () => {
 
                     <div className="mt-10 border-t pt-10">
                         <h2 className="text-2xl font-bold text-gray-800 mb-4">Organizer Information</h2>
-                        <div className="bg-gray-50 rounded-lg p-6 relative">
-                            {campaign.verified && campaign.creatorType === 'ngo' && (
-                                <div className="absolute top-1/2 -translate-y-1/2 -right-4 group">
-                                    <motion.div 
-                                        className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white shadow-lg"
-                                        initial={{ scale: 0 }}
-                                        animate={{ scale: 1 }}
-                                        transition={{ delay: 0.5, type: 'spring' }}
-                                    >
-                                        <CheckBadgeIcon className="w-8 h-8"/>
-                                    </motion.div>
-                                    <div className="absolute top-1/2 -translate-y-1/2 right-full mr-2 w-max bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-all pointer-events-none">
-                                        Verified NGO
-                                    </div>
-                                </div>
-                            )}
+                        <div className="bg-gray-50 rounded-lg p-6">
                             {campaign.creatorType === 'ngo' && campaign.organizer.ngoDetails ? (
                                 <>
-                                    <h3 className="text-xl font-bold text-gray-800">{campaign.organizer.ngoDetails.name}</h3>
+                                    <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+                                        {campaign.organizer.ngoDetails.name}
+                                        {campaign.verified && <CheckBadgeIcon className="w-6 h-6 text-blue-500" title="Verified Organization" />}
+                                    </h3>
                                     <p className="text-gray-600">Contact Person: {campaign.organizer.name}</p>
                                     <div className="mt-4 space-y-2 text-gray-700">
                                         <p><strong>Email:</strong> <a href={`mailto:${campaign.organizer.ngoDetails.email}`} className="text-blue-600">{campaign.organizer.ngoDetails.email}</a></p>
@@ -447,7 +406,10 @@ export const DetailsPage: React.FC = () => {
                                 </>
                             ) : (
                                 <>
-                                    <h3 className="text-xl font-bold text-gray-800">{campaign.organizer.name}</h3>
+                                    <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+                                        {campaign.organizer.name}
+                                        {campaign.verified && <CheckBadgeIcon className="w-6 h-6 text-blue-500" title="Verified Individual" />}
+                                    </h3>
                                     <p className="text-gray-600">(Individual Organizer)</p>
                                 </>
                             )}
@@ -480,11 +442,7 @@ export const DetailsPage: React.FC = () => {
                 title={infoModalContent?.title || ''}
                 message={infoModalContent?.message || ''}
             />
-            <GuestActionModal
-                show={showGuestModal}
-                onClose={() => setShowGuestModal(false)}
-                onLogin={handleLoginRedirect}
-            />
+            <LoginPromptModal show={showLoginPrompt} onClose={() => setShowLoginPrompt(false)} />
         </div>
     );
 };
@@ -496,25 +454,12 @@ export const CreateCampaignPage: React.FC = () => {
     const [imagePreview, setImagePreview] = useState<string | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [error, setError] = useState('');
-    const [showGuestModal, setShowGuestModal] = useState(false);
 
     useEffect(() => {
-        if (!currentUser) {
+        if (!currentUser || currentUser.email === 'guest@donify.com') {
             navigate('/login', { state: { from: { pathname: '/create' }, message: 'Please log in to create a campaign.' } });
-        } else if (currentUser.email === 'guest@donify.com') {
-            setShowGuestModal(true);
         }
     }, [currentUser, navigate]);
-
-    const handleLoginRedirect = () => {
-        setShowGuestModal(false);
-        navigate('/login', { state: { from: { pathname: '/create' }, message: 'Please log in to create a campaign.' } });
-    };
-
-    const handleCloseGuestModal = () => {
-        setShowGuestModal(false);
-        navigate('/'); // Go back home if they close the modal
-    };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
@@ -561,17 +506,7 @@ export const CreateCampaignPage: React.FC = () => {
         navigate('/discover');
     };
     
-    if (!currentUser || currentUser.email === 'guest@donify.com') {
-        return (
-             <div className="bg-gray-50 min-h-screen">
-                <GuestActionModal
-                    show={showGuestModal}
-                    onClose={handleCloseGuestModal}
-                    onLogin={handleLoginRedirect}
-                />
-            </div>
-        );
-    }
+    if(!currentUser) return null;
 
     return (
         <div className="bg-gray-50 min-h-screen pt-24 pb-16">
@@ -650,7 +585,7 @@ export const CreateCampaignPage: React.FC = () => {
 };
 
 export const ProfilePage: React.FC = () => {
-    const { currentUser, logout, getCampaignById, updateUserProfile } = useGlobal();
+    const { currentUser, logout, updateUserProfile } = useGlobal();
     const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [editData, setEditData] = useState<AuthUser | null>(currentUser);
@@ -690,25 +625,24 @@ export const ProfilePage: React.FC = () => {
 
     if (!currentUser) return null;
 
-    const isGuest = currentUser.email === 'guest@donify.com';
-
-    if (isGuest) {
+    if (currentUser.email === 'guest@donify.com') {
         return (
-             <div className="bg-gray-50 min-h-screen pt-32 pb-16">
+            <div className="bg-gray-50 min-h-screen pt-32 pb-16">
                 <div className="container mx-auto px-4">
                     <motion.div 
-                        className="max-w-2xl mx-auto bg-white rounded-2xl shadow-xl p-8 text-center"
+                        className="max-w-md mx-auto bg-white rounded-2xl shadow-xl p-8 text-center"
                         initial={{ opacity: 0, y: 50 }}
                         animate={{ opacity: 1, y: 0 }}
                     >
-                        <UserCircleIcon className="w-24 h-24 mx-auto text-gray-400" />
-                        <h1 className="text-3xl font-bold text-gray-800 mt-4">You are browsing as a Guest</h1>
-                        <p className="text-gray-600 mt-2 max-w-md mx-auto">
-                            Create an account to unlock the full Donify experience, including creating fundraisers, tracking your donations, and getting a verified donor badge.
+                        <UserCircleIcon className="w-20 h-20 text-gray-400 mx-auto" />
+                        <h1 className="text-3xl font-bold text-gray-800 mt-4">Guest Account</h1>
+                        <p className="text-center text-gray-600 mt-4 max-w-md mx-auto">
+                            You are currently browsing as a guest. To unlock all features like donation tracking, creating fundraisers, and appearing on the leaderboard, please create a full account.
                         </p>
-                        <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
-                            <SecondaryButton onClick={() => navigate('/login')} className="w-full sm:w-auto">Log In</SecondaryButton>
-                            <PrimaryButton onClick={() => navigate('/signup')} className="w-full sm:w-auto">Sign Up</PrimaryButton>
+                        <div className="mt-8">
+                            <PrimaryButton onClick={() => { logout(); navigate('/login'); }}>
+                                Log In or Sign Up
+                            </PrimaryButton>
                         </div>
                     </motion.div>
                 </div>
@@ -738,7 +672,7 @@ export const ProfilePage: React.FC = () => {
                         </div>
                     </div>
 
-                    <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                    <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
                         <div className="bg-blue-50 p-6 rounded-xl">
                             <p className="text-3xl font-bold text-blue-600">₹{currentUser.totalDonatedThisMonth.toLocaleString('en-IN')}</p>
                             <p className="text-gray-600 mt-1">Donated This Month</p>
@@ -757,25 +691,25 @@ export const ProfilePage: React.FC = () => {
                         <div className="mt-10 border-t pt-8">
                             <h2 className="text-2xl font-bold text-gray-800">Personal Information</h2>
                             <div className="mt-4 space-y-4">
-                                <div className="grid grid-cols-1 md:grid-cols-2 items-center p-4 bg-gray-50 rounded-lg gap-4">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 items-center p-4 bg-gray-50 rounded-lg gap-2 sm:gap-4">
                                     <label htmlFor="name" className="font-semibold text-gray-700">Full Name</label>
                                     {isEditing ? <input id="name" name="name" type="text" value={editData?.name || ''} onChange={handleInputChange} className="w-full p-2 border rounded-md" /> : <span className="text-gray-600">{currentUser.name}</span>}
                                 </div>
-                                 <div className="grid grid-cols-1 md:grid-cols-2 items-center p-4 bg-gray-50 rounded-lg gap-4">
+                                 <div className="grid grid-cols-1 sm:grid-cols-2 items-center p-4 bg-gray-50 rounded-lg gap-2 sm:gap-4">
                                     <label htmlFor="email" className="font-semibold text-gray-700">Email Address</label>
                                     {isEditing ? <input id="email" name="email" type="email" value={editData?.email || ''} onChange={handleInputChange} className="w-full p-2 border rounded-md font-mono" /> : <span className="text-gray-600 font-mono">{currentUser.email}</span>}
                                 </div>
                                 {currentUser.userType === 'ngo' && (
-                                     <div className="grid grid-cols-1 md:grid-cols-2 items-center p-4 bg-gray-50 rounded-lg gap-4">
+                                     <div className="grid grid-cols-1 sm:grid-cols-2 items-center p-4 bg-gray-50 rounded-lg gap-2 sm:gap-4">
                                         <label htmlFor="address" className="font-semibold text-gray-700">NGO Address</label>
                                         {isEditing ? <input id="address" name="address" type="text" value={editData?.address || ''} onChange={handleInputChange} className="w-full p-2 border rounded-md" /> : <span className="text-gray-600">{currentUser.address}</span>}
                                     </div>
                                 )}
-                                 <div className="grid grid-cols-1 md:grid-cols-2 items-center p-4 bg-gray-50 rounded-lg gap-4">
+                                 <div className="grid grid-cols-1 sm:grid-cols-2 items-center p-4 bg-gray-50 rounded-lg gap-2 sm:gap-4">
                                     <label htmlFor="pan" className="font-semibold text-gray-700">PAN Card</label>
                                     {isEditing ? <input id="pan" name="pan" type="text" value={editData?.pan || ''} onChange={handleInputChange} placeholder="Add your PAN" className="w-full p-2 border rounded-md font-mono" /> : <span className="text-gray-600 font-mono">{currentUser.pan || 'Not provided'}</span>}
                                 </div>
-                                 <div className="grid grid-cols-1 md:grid-cols-2 items-center p-4 bg-gray-50 rounded-lg gap-4">
+                                 <div className="grid grid-cols-1 sm:grid-cols-2 items-center p-4 bg-gray-50 rounded-lg gap-2 sm:gap-4">
                                     <label htmlFor="aadhaar" className="font-semibold text-gray-700">Aadhaar</label>
                                     {isEditing ? <input id="aadhaar" name="aadhaar" type="text" value={editData?.aadhaar || ''} onChange={handleInputChange} placeholder="Add your Aadhaar" className="w-full p-2 border rounded-md font-mono" /> : <span className="text-gray-600 font-mono">{currentUser.aadhaar || 'Not provided'}</span>}
                                 </div>
@@ -982,7 +916,7 @@ export const AboutPage: React.FC = () => {
                     </div>
 
                      <h2 className="text-3xl font-bold text-gray-800 mt-20 mb-10 text-center">Meet the Team</h2>
-                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
+                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
                         {MEET_THE_TEAM.map(member => (
                             <div key={member.name} className="text-center bg-gray-50 p-6 rounded-lg">
                                 <div className="w-40 h-40 mx-auto bg-gray-200 rounded-full flex items-center justify-center">
@@ -1211,7 +1145,7 @@ export const SignUpPage: React.FC = () => {
     });
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
-    const { signup } = useGlobal();
+    const auth = useGlobal();
     const navigate = useNavigate();
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -1228,7 +1162,7 @@ export const SignUpPage: React.FC = () => {
         if (!formData.agreed) return setError('You must agree to the Terms of Service.');
         if (userType === 'ngo' && (!formData.ngoName || !formData.phone || !formData.address)) return setError('Please fill in all NGO details.');
         
-        const result = signup({
+        const result = auth.signup({
             userType, name: formData.name, email: formData.email, password: formData.password,
             ngoName: userType === 'ngo' ? formData.ngoName : undefined,
             phone: userType === 'ngo' ? formData.phone : undefined,
@@ -1237,8 +1171,17 @@ export const SignUpPage: React.FC = () => {
         });
 
         if (result.success) {
-            setSuccess('Account created successfully! Redirecting to login...');
-            setTimeout(() => navigate('/login'), 2000);
+            setSuccess('Account created successfully! Logging you in...');
+            setTimeout(() => {
+                const loggedIn = auth.login(formData.email, formData.password);
+                if (loggedIn) {
+                    navigate('/'); // Navigate to home
+                } else {
+                    // This case is unlikely if signup succeeded, but good to handle
+                    setError("Auto-login failed. Please log in manually.");
+                    navigate('/login');
+                }
+            }, 1500);
         } else {
             setError(result.message || 'Signup failed.');
         }
@@ -1408,19 +1351,9 @@ export const LocationPage: React.FC = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const [showRequestModal, setShowRequestModal] = useState(false);
-    const [showGuestModal, setShowGuestModal] = useState(false);
-
-    const handleLoginRedirect = () => {
-        setShowGuestModal(false);
-        navigate('/login', { state: { from: location, message: "You need to log in to request help." } });
-    };
 
     const handleRequestHelpClick = () => {
-        if (currentUser) {
-            if (currentUser.email === 'guest@donify.com') {
-                setShowGuestModal(true);
-                return;
-            }
+        if (currentUser && currentUser.email !== 'guest@donify.com') {
             setShowRequestModal(true);
         } else {
             navigate('/login', { state: { from: location, message: "You need to log in to request help." } });
@@ -1435,110 +1368,190 @@ export const LocationPage: React.FC = () => {
           return;
         }
 
-        // FIX: Moved icon definitions to the top of the effect to ensure they are always in scope.
+        // Icon definitions
         const donorIcon = L.divIcon({
-            html: `<div class="p-1 bg-white rounded-full shadow-lg"><div class="w-8 h-8 rounded-full bg-green-500 border-2 border-white"></div></div>`,
+            html: `<div class="p-1 bg-white rounded-full shadow-lg"><div class="w-8 h-8 rounded-full bg-green-500 border-2 border-white flex items-center justify-center">
+                   <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20"><path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z"/></svg>
+                   </div></div>`,
             className: 'bg-transparent border-0',
             iconSize: [40, 40],
             iconAnchor: [20, 40],
         });
 
         const recipientIcon = L.divIcon({
-            html: `<div class="p-1 bg-white rounded-full shadow-lg"><div class="w-8 h-8 rounded-full bg-blue-500 border-2 border-white"></div></div>`,
+            html: `<div class="p-1 bg-white rounded-full shadow-lg"><div class="w-8 h-8 rounded-full bg-blue-500 border-2 border-white flex items-center justify-center">
+                   <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/></svg>
+                   </div></div>`,
+            className: 'bg-transparent border-0',
+            iconSize: [40, 40],
+            iconAnchor: [20, 40],
+        });
+
+        const verifiedDonorIcon = L.divIcon({
+            html: `<div class="p-1 bg-white rounded-full shadow-lg"><div class="w-8 h-8 rounded-full bg-green-500 border-2 border-white flex items-center justify-center relative">
+                   <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20"><path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z"/></svg>
+                   <div class="absolute -top-1 -right-1 w-4 h-4 bg-yellow-400 rounded-full flex items-center justify-center">
+                     <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                   </div>
+                   </div></div>`,
+            className: 'bg-transparent border-0',
+            iconSize: [40, 40],
+            iconAnchor: [20, 40],
+        });
+
+        const verifiedRecipientIcon = L.divIcon({
+            html: `<div class="p-1 bg-white rounded-full shadow-lg"><div class="w-8 h-8 rounded-full bg-blue-500 border-2 border-white flex items-center justify-center relative">
+                   <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/></svg>
+                   <div class="absolute -top-1 -right-1 w-4 h-4 bg-yellow-400 rounded-full flex items-center justify-center">
+                     <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                   </div>
+                   </div></div>`,
             className: 'bg-transparent border-0',
             iconSize: [40, 40],
             iconAnchor: [20, 40],
         });
 
         if (mapContainerRef.current && !mapRef.current) {
+            // Set initial view to Sector 10A, Gurugram, Haryana, India
             map = L.map(mapContainerRef.current).setView([28.4595, 77.0266], 14);
             mapRef.current = map;
 
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(map);
-        }
 
-        if (mapRef.current) {
+            // Add all location requests to the map
+            locationRequests.forEach(req => {
+                const icon = req.verified 
+                    ? (req.type === 'donor' ? verifiedDonorIcon : verifiedRecipientIcon)
+                    : (req.type === 'donor' ? donorIcon : recipientIcon);
 
-            const markerLayer = L.layerGroup().addTo(mapRef.current);
+                const marker = L.marker(req.position, { icon })
+                    .addTo(map);
 
-            locationRequests.forEach(request => {
-                const icon = request.type === 'donor' ? donorIcon : recipientIcon;
-                const marker = L.marker([request.position.lat, request.position.lng], { icon });
+                // Create popup content with quick info
+                const popupContent = `
+                    <div class="p-3 max-w-xs">
+                        <div class="flex items-center gap-2 mb-2">
+                            <h3 class="font-bold text-lg">${req.title}</h3>
+                            ${req.verified ? '<span class="text-yellow-500" title="Verified">✓</span>' : ''}
+                        </div>
+                        <p class="text-gray-600 text-sm mb-2">${req.description}</p>
+                        <div class="flex items-center gap-1 mb-2">
+                            <span class="inline-block w-3 h-3 rounded-full ${req.type === 'donor' ? 'bg-green-500' : 'bg-blue-500'}"></span>
+                            <span class="text-sm font-medium ${req.type === 'donor' ? 'text-green-700' : 'text-blue-700'}">
+                                ${req.type === 'donor' ? 'Donor' : 'Recipient'}
+                            </span>
+                        </div>
+                        <p class="text-sm text-gray-700"><strong>Name:</strong> ${req.name}</p>
+                        <p class="text-sm text-gray-700"><strong>Location:</strong> ${req.address || 'Sector 10A, Gurugram'}</p>
+                        <button onclick="window.location.href='/location-profile/${req.id}'" 
+                                class="w-full mt-3 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors text-sm font-medium">
+                            View Full Details
+                        </button>
+                    </div>
+                `;
+
+                marker.bindPopup(popupContent);
                 
-                marker.bindPopup(`<b style="color: ${request.type === 'donor' ? '#10B981' : '#3B82F6'}">${request.title}</b><br>${request.description}`);
-
-                marker.on('mouseover', () => marker.openPopup());
-                marker.on('mouseout', () => marker.closePopup());
-                marker.on('click', () => navigate(`/location-profile/${request.id}`));
-                
-                markerLayer.addLayer(marker);
+                // Add click event to navigate to details page
+                marker.on('click', () => {
+                    navigate(`/location-profile/${req.id}`);
+                });
             });
 
-            return () => {
-                markerLayer.clearLayers();
-            };
+            // Add Sector 10A marker
+            const sector10AIcon = L.divIcon({
+                html: `<div class="p-2 bg-red-500 text-white rounded-lg shadow-lg font-semibold text-sm">
+                       📍 Sector 10A<br>Gurugram
+                       </div>`,
+                className: 'bg-transparent border-0',
+                iconSize: [120, 40],
+                iconAnchor: [60, 40],
+            });
+
+            L.marker([28.4595, 77.0266], { icon: sector10AIcon })
+                .addTo(map)
+                .bindPopup(`
+                    <div class="p-2">
+                        <h3 class="font-bold">Our Location</h3>
+                        <p>Sector 10A, Gurugram, Haryana, India</p>
+                        <p class="text-sm text-gray-600">Donify Headquarters</p>
+                    </div>
+                `);
         }
 
+        return () => {
+            if (mapRef.current) {
+                mapRef.current.remove();
+                mapRef.current = null;
+            }
+        };
     }, [locationRequests, navigate]);
 
     return (
-        <div className="bg-gray-100 min-h-screen">
-            <div className="bg-gradient-to-b from-blue-100 to-gray-100 pt-32 pb-16">
-                <div className="container mx-auto px-4 text-center">
-                    <h1 className="text-5xl font-bold text-gray-800">Local Needs, Local Heroes</h1>
-                    <p className="mt-4 text-lg text-gray-600">Discover urgent requests for help right in your community.</p>
-                    <div className="mt-8">
-                        <PrimaryButton onClick={handleRequestHelpClick} className="inline-flex items-center gap-2">
-                           <LifebuoyIcon className="w-5 h-5"/> Request Help
-                        </PrimaryButton>
+        <div className="relative min-h-screen">
+            <div ref={mapContainerRef} className="absolute inset-0 h-full w-full" style={{ zIndex: 1 }}></div>
+            
+            {/* Header Info Box */}
+            <div className="absolute top-24 left-1/2 -translate-x-1/2 z-10 w-full max-w-lg px-4">
+                <div className="bg-white/90 backdrop-blur-md rounded-xl shadow-lg p-4 text-center">
+                    <h1 className="text-2xl font-bold text-gray-800">Global Aid Network</h1>
+                    <p className="text-gray-600 mt-2">
+                        Connecting donors and recipients worldwide. Click on any pin to see details.
+                    </p>
+                    <div className="flex justify-center gap-6 mt-3 text-sm">
+                        <div className="flex items-center gap-1">
+                            <span className="inline-block w-3 h-3 rounded-full bg-green-500"></span>
+                            <span>Donors</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                            <span className="inline-block w-3 h-3 rounded-full bg-blue-500"></span>
+                            <span>Recipients</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                            <span className="inline-block w-4 h-4 rounded-full bg-yellow-400 flex items-center justify-center text-xs text-white">✓</span>
+                            <span>Verified</span>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div className="container mx-auto px-4 py-12">
-                <div 
-                    ref={mapContainerRef} 
-                    className="w-full h-[70vh] max-w-5xl mx-auto rounded-lg shadow-xl z-0"
-                />
+            
+            {/* Request Help Button */}
+            <div className="absolute bottom-24 md:bottom-8 left-1/2 -translate-x-1/2 z-10">
+                <PrimaryButton onClick={handleRequestHelpClick}>
+                    <LifebuoyIcon className="w-5 h-5 mr-2" />
+                    Request Assistance
+                </PrimaryButton>
             </div>
+            
             <RequestHelpModal show={showRequestModal} onClose={() => setShowRequestModal(false)} />
-            <GuestActionModal 
-                show={showGuestModal}
-                onClose={() => setShowGuestModal(false)}
-                onLogin={handleLoginRedirect}
-            />
         </div>
     );
 };
 
+// FIX: Add missing LocationProfilePage component.
 export const LocationProfilePage: React.FC = () => {
     const { id } = useParams<{ id: string }>();
-    const { getLocationRequestById, currentUser, recordLocalDonation } = useGlobal();
+    const { getLocationRequestById, recordLocalDonation, currentUser } = useGlobal();
+    const requestId = id ? parseInt(id, 10) : undefined;
+    const request = requestId ? getLocationRequestById(requestId) : undefined;
+    
     const [showDonationModal, setShowDonationModal] = useState(false);
     const [showPaymentModal, setShowPaymentModal] = useState(false);
     const [donationAmount, setDonationAmount] = useState(0);
-    const [infoModalContent, setInfoModalContent] = useState<{title: string, message: string} | null>(null);
     const navigate = useNavigate();
     const location = useLocation();
-    const [showGuestModal, setShowGuestModal] = useState(false);
 
-    const request = getLocationRequestById(Number(id));
-    
-    const handleLoginRedirect = () => {
-        setShowGuestModal(false);
-        navigate('/login', { state: { from: location, message: "You need to log in to make a donation." } });
+    if (!request) {
+        return <div className="min-h-screen flex items-center justify-center"><p>Request not found.</p></div>;
     }
 
     const handleDonateClick = () => {
-        if (currentUser) {
-            if (currentUser.email === 'guest@donify.com') {
-                setShowGuestModal(true);
-                return;
-            }
+        if (currentUser && currentUser.email !== 'guest@donify.com') {
             setShowDonationModal(true);
         } else {
-            navigate('/login', { state: { from: location, message: "You need to log in to make a donation." } });
+             navigate('/login', { state: { from: location, message: "Please log in to donate." } });
         }
     };
 
@@ -1547,173 +1560,124 @@ export const LocationProfilePage: React.FC = () => {
         setDonationAmount(amount);
         const paymentSetupComplete = localStorage.getItem('paymentSetupComplete');
         if (!paymentSetupComplete) {
-            navigate('/payment-setup', { state: { from: location, message: "To complete your donation, please set up a payment method." } });
+            navigate('/payment-setup', { 
+                state: { 
+                    from: location, 
+                    message: "To complete your donation, please set up a payment method first." 
+                } 
+            });
         } else {
             setShowPaymentModal(true);
         }
     };
-    
+
     const handlePaymentSuccess = () => {
-        if(request && donationAmount > 0) {
-            recordLocalDonation(request.id, donationAmount);
+        if (requestId && donationAmount > 0) {
+            recordLocalDonation(requestId, donationAmount);
             setShowPaymentModal(false);
             confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, zIndex: 9999 });
-            setInfoModalContent({ title: "Thank You!", message: "Your local donation has been recorded. You're making a real difference in your community!"});
         }
     };
-
-    if (!request) return (
-        <div className="bg-gray-50 min-h-screen pt-32 pb-16 text-center">
-            <h2 className="text-2xl text-gray-700">Request not found.</h2>
-            <div className="mt-8">
-                <SecondaryButton to="/location">Back to Map</SecondaryButton>
-            </div>
-        </div>
-    );
-    
-    const isRecipient = request.type === 'recipient';
 
     return (
         <div className="bg-gray-50 min-h-screen pt-24 pb-16">
             <div className="container mx-auto px-4">
                 <BackButton />
-                <motion.div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-xl p-8 mt-6" initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }}>
-                    <div className="flex flex-col sm:flex-row items-start gap-8">
-                        <InitialsAvatar name={request.name} className="w-24 h-24 text-4xl flex-shrink-0" />
-                        <div className="flex-grow">
-                             <span className={`inline-block px-3 py-1 text-sm font-semibold rounded-full mb-2 ${isRecipient ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'}`}>
-                                {isRecipient ? 'Recipient' : 'Donor'}
-                            </span>
-                            <h1 className="text-4xl font-bold text-gray-800">{request.title}</h1>
-                            <p className="text-lg text-gray-600 mt-2">by {request.name}</p>
-                        </div>
+                <motion.div 
+                    className="max-w-2xl mx-auto bg-white rounded-2xl shadow-xl p-8 mt-6"
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                >
+                    {request.imageUrl && <img src={request.imageUrl} alt={request.title} className="w-full h-64 object-cover rounded-lg mb-6" />}
+                    <div className="flex justify-between items-start">
+                         <h1 className="text-3xl font-bold text-gray-800">{request.title}</h1>
+                         <span className={`px-3 py-1 text-sm font-semibold rounded-full ${request.type === 'donor' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'}`}>
+                            {request.type === 'donor' ? 'Donor' : 'Recipient'}
+                         </span>
                     </div>
-
-                    {request.imageUrl && (
-                        <img src={request.imageUrl} alt={request.title} className="w-full h-64 object-cover rounded-lg mt-8" />
-                    )}
-
-                    <div className="mt-8 border-t pt-8">
-                        <h2 className="text-2xl font-bold text-gray-800">Details</h2>
-                        <p className="text-gray-700 mt-4 leading-relaxed whitespace-pre-wrap">{request.description}</p>
-                    </div>
-
-                    <div className="mt-8 border-t pt-8">
-                        <h2 className="text-2xl font-bold text-gray-800">Contact Information</h2>
-                        <div className="mt-4 space-y-2">
-                             <p><strong>Email:</strong> <a href={`mailto:${request.email}`} className="text-blue-600">{request.email}</a></p>
-                             <p><strong>Phone:</strong> <a href={`tel:${request.phone}`} className="text-blue-600">{request.phone}</a></p>
-                        </div>
-                    </div>
+                    <p className="text-gray-600 mt-4">{request.description}</p>
                     
-                    {isRecipient && (
-                        <div className="mt-10 text-center">
-                            <PrimaryButton onClick={handleDonateClick} className="text-lg px-10">
-                                Donate to this Cause
+                    <div className="mt-8 border-t pt-6 space-y-4">
+                        <div className="flex items-center gap-3">
+                            <UserCircleIcon className="w-6 h-6 text-gray-500" />
+                            <span className="font-semibold">{request.name}</span>
+                            {request.verified && <CheckBadgeIcon className="w-5 h-5 text-blue-500" title="Verified" />}
+                        </div>
+                        <div className="flex items-center gap-3">
+                            <EnvelopeIcon className="w-6 h-6 text-gray-500" />
+                            <span className="text-gray-700">{request.email}</span>
+                        </div>
+                         <div className="flex items-center gap-3">
+                            <MapPinIcon className="w-6 h-6 text-gray-500" />
+                            <span className="text-gray-700">{request.address}</span>
+                        </div>
+                    </div>
+
+                    {request.type === 'recipient' && (
+                         <div className="mt-8 border-t pt-6">
+                            <PrimaryButton onClick={handleDonateClick} className="w-full text-lg py-4">
+                                Help {request.name}
                             </PrimaryButton>
                         </div>
                     )}
                 </motion.div>
             </div>
-            {isRecipient && (
-                <>
-                    <DonationModal 
-                        show={showDonationModal} 
-                        onClose={() => setShowDonationModal(false)} 
-                        onDonate={handleDonationAttempt} 
-                        title="Help a Local Cause"
-                    />
-                    <PaymentFlowModal 
-                        show={showPaymentModal}
-                        onClose={() => setShowPaymentModal(false)}
-                        onSuccess={handlePaymentSuccess}
-                        amount={donationAmount}
-                    />
-                     <InfoModal 
-                        show={!!infoModalContent}
-                        onClose={() => setInfoModalContent(null)}
-                        title={infoModalContent?.title || ''}
-                        message={infoModalContent?.message || ''}
-                    />
-                    <GuestActionModal 
-                        show={showGuestModal}
-                        onClose={() => setShowGuestModal(false)}
-                        onLogin={handleLoginRedirect}
-                    />
-                </>
-            )}
+             <DonationModal 
+                show={showDonationModal} 
+                onClose={() => setShowDonationModal(false)} 
+                onDonate={handleDonationAttempt} 
+                title={`Donate to ${request.name}`}
+            />
+            <PaymentFlowModal 
+              show={showPaymentModal}
+              onClose={() => setShowPaymentModal(false)}
+              onSuccess={handlePaymentSuccess}
+              amount={donationAmount}
+            />
         </div>
     );
-}
+};
 
+// FIX: Add missing CertificatePage component.
 export const CertificatePage: React.FC = () => {
     const { currentUser } = useGlobal();
     const navigate = useNavigate();
-    const certificateRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        if (!currentUser || !currentUser.totalDonatedThisMonth || currentUser.totalDonatedThisMonth <= 0) {
+        if (!currentUser || currentUser.totalDonatedThisMonth === 0) {
             navigate('/leaderboard');
         }
     }, [currentUser, navigate]);
-    
+
     if (!currentUser) return null;
 
-    const handleDownload = () => {
-        const { jsPDF } = (window as any).jspdf;
-        const html2canvas = (window as any).html2canvas;
-        
-        if (certificateRef.current && jsPDF && html2canvas) {
-            html2canvas(certificateRef.current, { 
-                scale: 2,
-                useCORS: true,
-                backgroundColor: null
-            }).then((canvas: HTMLCanvasElement) => {
-                const imgData = canvas.toDataURL('image/png');
-                const pdf = new jsPDF({
-                    orientation: 'landscape',
-                    unit: 'px',
-                    format: [canvas.width, canvas.height]
-                });
-                pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
-                pdf.save('Donify-Certificate.pdf');
-            });
-        } else {
-            alert("Could not download certificate. PDF generation library is missing or failed to load.");
-        }
-    };
+    // A simple handwriting-style font class (assuming it's defined in index.css or similar)
+    const handwritingFont = { fontFamily: "'Caveat', cursive" };
 
     return (
-        <div className="bg-gray-100 min-h-screen pt-32 pb-16 flex flex-col items-center justify-center">
-            <div className="container mx-auto px-4">
-                <BackButton className="mb-4" />
-                <div ref={certificateRef} className="max-w-3xl mx-auto bg-white rounded-lg shadow-2xl p-8 border-4 border-yellow-400 bg-yellow-50/50">
-                    <div className="text-center border-b-2 border-yellow-300 pb-4">
-                        <TrophyIcon className="w-16 h-16 mx-auto text-yellow-500" />
-                        <h1 className="text-4xl font-bold text-gray-800 mt-2">Certificate of Appreciation</h1>
-                        <p className="text-gray-600 text-lg">Proudly Presented To</p>
-                    </div>
-                    <div className="text-center my-12">
-                        <h2 className="text-5xl font-['Satisfy',_cursive] text-blue-600">{currentUser.name}</h2>
-                    </div>
-                    <div className="text-center">
-                        <p className="text-lg text-gray-700">For your outstanding generosity and invaluable contribution of</p>
-                        <p className="text-3xl font-bold text-green-600 my-2">₹{currentUser.totalDonatedThisMonth.toLocaleString('en-IN')}</p>
-                        <p className="text-lg text-gray-700">during the month of {new Date().toLocaleString('default', { month: 'long', year: 'numeric' })}.</p>
-                        <p className="mt-6 text-gray-500">Your kindness creates ripples of hope.</p>
-                    </div>
-                    <div className="flex justify-between items-center mt-12 border-t-2 border-yellow-300 pt-4">
-                        <div>
-                            <p className="font-bold">Donify Team</p>
-                            <p className="text-sm text-gray-500">Issued: {new Date().toLocaleDateString()}</p>
-                        </div>
-                        <DonifyLogo className="w-12 h-12" />
-                    </div>
+        <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+            <motion.div 
+                className="w-full max-w-4xl bg-white rounded-lg shadow-2xl p-8 aspect-[1.414] border-8 border-blue-200 relative flex flex-col justify-center"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5 }}
+            >
+                <div className="text-center">
+                    <h1 className="text-4xl font-bold text-blue-800" style={{ fontFamily: "'Merriweather', serif" }}>Certificate of Appreciation</h1>
+                    <p className="text-lg mt-6">This certificate is proudly presented to</p>
+                    <p className="text-5xl my-8 text-amber-600" style={handwritingFont}>{currentUser.name}</p>
+                    <p className="text-lg">In recognition of your generous contribution of</p>
+                    <p className="text-3xl font-bold my-4 text-blue-700">₹{currentUser.totalDonatedThisMonth.toLocaleString('en-IN')}</p>
+                    <p className="text-lg">during the month of {new Date().toLocaleString('default', { month: 'long', year: 'numeric' })}.</p>
                 </div>
-                <div className="text-center mt-8">
-                    <PrimaryButton onClick={handleDownload}>Download Certificate</PrimaryButton>
+                <div className="flex justify-between items-center mt-12 absolute bottom-8 left-8 right-8">
+                    <div className="text-left">
+                        <p className="font-bold" style={handwritingFont}>The Donify Team</p>
+                        <p className="text-sm border-t border-gray-400 pt-1 mt-1">Date: {new Date().toLocaleDateString()}</p>
+                    </div>
+                    <DonifyLogo className="h-16 w-16" />
                 </div>
-            </div>
+            </motion.div>
         </div>
     );
 };
